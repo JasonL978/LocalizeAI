@@ -83,5 +83,10 @@ async def set(key: str, value: Any, ttl: int = config.CACHE_TTL_SECONDS) -> None
         logger.warning("Cache SET failed: %s", e)
 
 
-def build_cache_key(category: str, city: str, language: str) -> str:
-    return f"civiclens:{category}:{city.lower().replace(' ', '_')}:{language}"
+def build_cache_key(category: str, city: str, language: str, query: str = "") -> str:
+    import hashlib
+    base = f"civiclens:{category}:{city.lower().replace(' ', '_')}:{language}"
+    if query:
+        q_hash = hashlib.md5(query.lower().strip().encode()).hexdigest()[:8]
+        return f"{base}:{q_hash}"
+    return base

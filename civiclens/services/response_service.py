@@ -86,7 +86,7 @@ Respond entirely in {intent.detected_language_name} using the resource data abov
                                               _STATIC_FALLBACK["en"])
 
     cache_key = redis_client.build_cache_key(
-        intent.category.value, intent.city, intent.detected_language
+        intent.category.value, intent.city, intent.detected_language, intent.search_query
     )
     await redis_client.set(cache_key, {
         "response_text": response_text,
